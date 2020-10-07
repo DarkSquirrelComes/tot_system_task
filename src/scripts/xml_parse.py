@@ -1,6 +1,6 @@
 import xml.etree.ElementTree as ET
 
-from config import SECURITIES_FILES, HISTORY_FILES
+from .config import SECURITIES_FILES, HISTORY_FILES
 
 
 security_rows = []

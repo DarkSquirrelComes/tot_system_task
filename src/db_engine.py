@@ -6,7 +6,7 @@ from sqlalchemy import Integer, create_engine, select
 
 from sqlalchemy_aio import ASYNCIO_STRATEGY
 
-from xml_parse import history_rows, security_rows
+from scripts import history_rows, security_rows
 
 from db_schemas import history, securities
 
