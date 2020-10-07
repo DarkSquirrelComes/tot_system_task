@@ -22,6 +22,7 @@ router = web.RouteTableDef()
 #-------------------ROOT---------------------
 
 @router.get("/")
+@handle_error
 async def root(request: web.Request) -> web.Response:
     return web.Response(text="Hello world!")
 
@@ -29,6 +30,7 @@ async def root(request: web.Request) -> web.Response:
 #-------------------HISORY-------------------
 
 @router.get("/history/all")
+@handle_error
 async def history_all(request: web.Request) -> web.Response:
     res = await fetch_all_history()
     return web.json_response(
@@ -37,6 +39,7 @@ async def history_all(request: web.Request) -> web.Response:
     )
 
 @router.post("/history/create")
+@handle_error
 async def history_create(request: web.Request) -> web.Response:
     json_from_request = await request.json()
     await insert_into_history(json_from_request)
@@ -46,6 +49,7 @@ async def history_create(request: web.Request) -> web.Response:
 #-------------------SECURITIES-----------------
 
 @router.get("/securities/all")
+@handle_error
 async def securities_all(request: web.Request) -> web.Response:
     res = await fetch_all_securities()
     return web.json_response(
@@ -54,12 +58,14 @@ async def securities_all(request: web.Request) -> web.Response:
         )
 
 @router.get("/securities/filtered")
+@handle_error
 async def securities_filtered(request: web.Request) -> web.Response:
     json_from_request = await request.json()
     res = await fetch_filtered_securities(json_from_request)
     return build_response(res)
 
 @router.post("/securities/create")
+@handle_error
 @handle_incorrect_name
 async def securities_create(request: web.Request) -> web.Response:
     json_from_request = await request.json()
@@ -67,6 +73,7 @@ async def securities_create(request: web.Request) -> web.Response:
     return build_response()
 
 @router.post("/securities/update")
+@handle_error
 @handle_incorrect_name
 async def securities_update(request: web.Request) -> web.Response:
     json_from_request = await request.json()
@@ -74,6 +81,7 @@ async def securities_update(request: web.Request) -> web.Response:
     return build_response()
 
 @router.post("/securities/delete")
+@handle_error
 async def securities_delete(request: web.Request) -> web.Response:
     json_from_request = await request.json()
     await delete_from_securities(json_from_request["secid"])
