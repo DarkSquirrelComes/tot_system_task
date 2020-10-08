@@ -121,14 +121,15 @@ async def update_in_securities(row: Dict) -> None:
 
 
 async def fetch_filtered_securities(row: Dict) -> List[List[Tuple]]:
-    order_by = row.get("order_by")
+    order_by = {"order_by": row["order_by"]}  if "order_by" in row else {}
     filter_by = {}
 
+
     if "tradedate" in row:
-        filter_by["history.TRADEDATE"] = row["tradedate"]
+        filter_by["tradedate"] = row["tradedate"]
 
     if "emitent_title" in row:
-        filter_by["securities.emitent_title"] = row["emitent_title"]
+        filter_by["emitent_title"] = row["emitent_title"]
 
     conn = await engine.connect()
 
@@ -147,14 +148,15 @@ async def fetch_filtered_securities(row: Dict) -> List[List[Tuple]]:
         {
             '' if not filter_by
             else 'WHERE ' + ' AND '.join(
-                [f'{k}=={repr(filter_by[k])}' for k in filter_by]
+                [f'{k}==:{k}' for k in filter_by]
             )
         }
         {
-            f'ORDER BY {order_by}' if order_by else ''
+            f'ORDER BY :order_by' if order_by else ''
         };"""
 
-    result = await conn.execute(request)
+    filter_by.update(order_by)
+    result = await conn.execute(request, **filter_by)
     rows = await result.fetchall()
 
     await conn.close()
