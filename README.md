@@ -14,6 +14,7 @@ python ./src/entry.py
 
 <details><summary>GET /history/all</summary>
 response:
+    
 ```json
 {
     "status": "success",
