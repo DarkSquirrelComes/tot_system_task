@@ -63,6 +63,11 @@ async def fetch_all_history() -> List[Tuple]:
 
 async def insert_into_history(row: Dict) -> None:
     conn = await engine.connect()
+
+    result = await conn.execute(select([securities]).where(securities.c.secid==row["SECID"]))
+    rows = await result.fetchall()
+    if not rows:
+        raise Exception("No such secid")
     await conn.execute(history.insert().values(**row))
     await conn.close()
 
@@ -84,6 +89,12 @@ async def fetch_all_securities() -> List[Tuple]:
 
 async def insert_into_securities(row: Dict) -> None:
     conn = await engine.connect()
+
+    result = await conn.execute(select([securities]).where(securities.c.secid==row["secid"]))
+    rows = await result.fetchall()
+    if rows:
+        raise Exception("'secid' already exists")
+
     await conn.execute(securities.insert().values(**row))
     await conn.close()
 
@@ -96,8 +107,10 @@ async def delete_from_securities(id_: Integer) -> None:
 
 
 async def update_in_securities(row: Dict) -> None:
+    if not "id" in row:
+        raise Exception("'id' not specified")
     if "secid" in row:
-        return "'secid' forbidden to change"
+        raise Exception("'secid' prohibited to change")
     conn = await engine.connect()
     await conn.execute(
         securities.update().

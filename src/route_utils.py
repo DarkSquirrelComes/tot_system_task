@@ -24,7 +24,7 @@ def handle_incorrect_name(
         )):
             return await func(request)
         else:
-            raise ValueError("Incorrect symbol in 'name'")
+            raise ValueError("incorrect symbol in 'name'")
 
     return handler
 

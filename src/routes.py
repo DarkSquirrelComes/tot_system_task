@@ -33,17 +33,14 @@ async def root(request: web.Request) -> web.Response:
 @handle_error
 async def history_all(request: web.Request) -> web.Response:
     res = await fetch_all_history()
-    return web.json_response(
-        res,
-        dumps=lambda data: json.dumps(data, ensure_ascii=False, indent=4)
-    )
+    return build_response(res)
 
 @router.post("/history/create")
 @handle_error
 async def history_create(request: web.Request) -> web.Response:
     json_from_request = await request.json()
     await insert_into_history(json_from_request)
-    return web.json_response({"status": "success"})
+    return build_response()
 
 
 #-------------------SECURITIES-----------------
