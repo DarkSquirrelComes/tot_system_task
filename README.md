@@ -104,7 +104,7 @@ response (no such secid):
 </details>
 
 <details><summary>GET /securities/all</summary>
-resonse:
+response:
 
 ```json
 [
@@ -149,19 +149,11 @@ resonse:
 
 </details>
 
-<details><summary>GET /securities/all</summary>
-resonse:
-
-```json
-
-```
-
-</details>
 
 <details><summary>GET /securities/filtered</summary>
 request (here can be subset of this fields):
   
-```
+```json
 {
     "tradedate": "2020-04-15",
     "emitent_title": "Общество с ограниченной ответственностью Управляющая компания \"Надежное управление\"",
@@ -169,7 +161,7 @@ request (here can be subset of this fields):
 }
 ```
   
-resonse:
+response:
 
 ```json
 {
@@ -198,49 +190,160 @@ request:
 
 ```json
 {
-    "secid": "RU000A0JT8U8",
-    "regnumber": "1976-94172492",
-    "name": "УК НадежуправЗПИФУралНедв",
-    "emitent_title": "Общество с ограниченной ответственностью Управляющая компания \"Надежное управление\"",
-    "tradedate": "2020-04-15",
-    "numtrades": 0.0,
+    "secid": "AKRN",
+    "shortname": "Акрон",
+    "regnumber": "1-03-00207-A",
+    "name": "Акрон ПАО ао",
+    "isin": "RU0009028674",
+    "is_traded": 1,
+    "emitent_id": 1418,
+    "emitent_title": "Публичное акционерное общество \"Акрон\"",
+    "emitent_inn": "5321029508",
+    "emitent_okpo": "00203789",
+    "gosreg": "1-03-00207-A",
+    "type": "common_share",
+    "group": "stock_shares",
+    "primary_boardid": "TQBR",
+    "marketprice_boardid": "TQBR"
 }
 
 ```
 
-resonse can be:
+response can be:
 
 ```json
 {
     "status": "failed",
-    "reason": "secid already exists"
+    "reason": "'secid' already exists"
 }
 
 ```
 
-resonse can be:
+response can be:
+
+```json
+{
+    "status": "success"
+}
+
+```
+___
+
+request:
+```json
+{
+    "secid": "UNIQUEQ_ID",
+    "name": "__BAD_NAME__"
+}
+
+```
+
+response:
 
 ```json
 {
     "status": "failed",
-    "reason": "secid already exists"
+    "reason": "incorrect symbol in 'name'"
 }
 
 ```
+
 
 </details>
 
 <details><summary>POST /securities/update</summary>
 
+___
+
 request:
 
 ```json
+{
+    "secid": "123",
+    "regnumber": "1976-94172492",
+    "name": "УК НадежуправЗПИФУралНедв",
+    "emitent_title": "Общество с ограниченной ответственностью Управляющая компания \"Надежное управление\"",
+    "tradedate": "2020-04-15",
+    "numtrades": 0.0
+}
 
 ```
 
-resonse:
+response:
 
 ```json
+{
+    "status": "failed",
+    "reason": "'id' not specified"
+}
+```
+
+___
+
+request:
+
+```json
+{
+    "id": 2700,
+    "secid": "123",
+    "regnumber": "1976-94172492",
+    "name": "УК НадежуправЗПИФУралНедв",
+    "emitent_title": "Общество с ограниченной ответственностью Управляющая компания \"Надежное управление\"",
+    "tradedate": "2020-04-15",
+    "numtrades": 0.0
+}
+
+```
+
+response:
+
+```json
+{
+    "status": "failed",
+    "reason": "'secid' prohibited to change"
+}
+```
+
+___
+
+request:
+
+```json
+{
+    "id": 2700,
+    "name": "УК Рога-и-копыта"
+}
+
+```
+
+response:
+
+```json
+{
+    "status": "failed",
+    "reason": "Incorrect symbol in 'name'"
+}
+
+```
+
+___
+
+request:
+
+```json
+{
+    "id": 2700,
+    "name": "УК Рога и копыта"
+}
+
+```
+
+response:
+
+```json
+{
+    "status": "success"
+}
 
 ```
 
@@ -251,13 +354,18 @@ resonse:
 request:
 
 ```json
+{
+    "secid": "NEW1111111",
+}
 
 ```
 
-resonse:
+response:
 
 ```json
-
+{
+    "status": "success"
+}
 ```
 
 </details>
